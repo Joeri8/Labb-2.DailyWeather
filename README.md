@@ -1,4 +1,2 @@
-Dagens Väder
-Beskrivning
 Dagens Väder är en liten webbapp som låter dig kolla vädret i vilken stad som helst. Du kan skriva in en stad, få vädret för de närmaste 24 timmarna och spara dina favoritstäder så att du lätt kan kolla dem igen senare.
 Appen är byggd med HTML, CSS och JavaScript och använder Open-Meteo API för att hämta väderdata. Favoriter sparas temporärt med sessionStorage, vilket betyder att de finns kvar så länge du har sidan öppen.
