@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vad är Vädret</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>Dagens Väder 🌤️</h1>
+    <nav>
+        <a href="index.html">Hem</a>
+        <a href="about.html">Om</a>
+    </nav>
+</header>
+
+<main>
+    <section class="search">
+        <input id="cityInput" type="text" placeholder="Ange stad...">
+        <button id="getWeatherBtn">Hämta väder</button>
+        <button id="addFavoriteBtn">Lägg till favorit</button>
+    </section>
+
+    <section class="favorites">
+        <h3>Favoriter</h3>
+        <ul id="favoritesList"></ul>
+    </section>
+
+    <section id="weatherResult"></section>
+</main>
+
+<footer>
+    <p>© 2025 Dagens Väder 🌤️| Skapad av Johan & Jonathan</p>
+    <p>Data hämtas från Open-Meteo</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
