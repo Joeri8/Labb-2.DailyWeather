@@ -1,5 +1,37 @@
-
 // Hämtning av API
+// ==============================
+// POST — mocka spara favorit på JSONPlaceholder
+async function postFavoriteToServer(city) {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            title: "Favorite city",
+            body: city,
+            userId: 1
+        })
+    });
+
+    const data = await response.json();
+
+    // Spara ID:t så DELETE kan jobba senare
+    mockApiIds[city] = data.id;
+    saveFavorites();
+
+    console.log("POST skickad:", data);
+}
+
+// DELETE — ta bort stad från JSONPlaceholder
+async function deleteFavoriteFromServer(id) {
+    if (!id) return;
+
+    await fetch("https://jsonplaceholder.typicode.com/posts/" + id, {
+        method: "DELETE"
+    });
+
+    console.log("DELETE skickad för ID:", id);
+}
+
 // Hämtar koordinater för en stad
 async function getCoordinates(city) {
     const url = "https://geocoding-api.open-meteo.com/v1/search?name=" + city;
@@ -81,9 +113,14 @@ const favoritesList = document.getElementById("favoritesList");
 // Vi hämtar favoriter från sessionStorage eller startar en tom lista
 let favorites = JSON.parse(sessionStorage.getItem("favorites")) || [];
 
+// --- MOCK API DATA LINKNING ---
+let mockApiIds = JSON.parse(sessionStorage.getItem("mockApiIds")) || {}; 
+// Exempel: { "Stockholm": 101, "Paris": 55 }
+
 // Vi sparar favoriter till sessionStorage
 function saveFavorites() {
     sessionStorage.setItem("favorites", JSON.stringify(favorites));
+    sessionStorage.setItem("mockApiIds", JSON.stringify(mockApiIds));
     renderFavorites();
 }
 
@@ -104,7 +141,9 @@ function renderFavorites() {
         const removeBtn = document.createElement("button");
         removeBtn.textContent = "Ta bort";
         removeBtn.addEventListener("click", () => {
+            deleteFavoriteFromServer(mockApiIds[city]); // DELETE → JSONPlaceholder
             favorites.splice(index, 1);
+            delete mockApiIds[city];
             saveFavorites();
         });
 
@@ -114,7 +153,6 @@ function renderFavorites() {
     });
 }
 
-
 // Vi lägger till "lägg till favorit" knappen
 document.getElementById("addFavoriteBtn").addEventListener("click", () => {
     const city = document.getElementById("cityInput").value.trim();
@@ -122,6 +160,8 @@ document.getElementById("addFavoriteBtn").addEventListener("click", () => {
 
     favorites.push(city);
     saveFavorites();
+
+    postFavoriteToServer(city); // POST → JSONPlaceholder
 });
 
 // Vi hämtar vädret från favoritlistan
