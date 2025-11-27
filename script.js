@@ -1,6 +1,5 @@
 // Hämtning av API
-// ==============================
-// POST — mocka spara favorit på JSONPlaceholder
+// POST, Sparar favoriter till mock API JSONPlaceholder
 async function postFavoriteToServer(city) {
     const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
         method: "POST",
@@ -14,14 +13,14 @@ async function postFavoriteToServer(city) {
 
     const data = await response.json();
 
-    // Spara ID:t så DELETE kan jobba senare
+    // Sparar ID
     mockApiIds[city] = data.id;
     saveFavorites();
 
     console.log("POST skickad:", data);
 }
 
-// DELETE — ta bort stad från JSONPlaceholder
+// DELETE, tar bort stad från JSONPlaceholder via ID
 async function deleteFavoriteFromServer(id) {
     if (!id) return;
 
